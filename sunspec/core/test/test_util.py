@@ -117,7 +117,9 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(util.float_to_data(float(-1000)), b'\xc0\x8f\x40\x00\x00\x00\x00\x00')
 
     def test_str_to_data(self):
-        self.assertEqual(util.str_to_data('SunSpec Test'), b'\x53\x75\x6e\x53\x70\x65\x63\x20\x54\x65\x73\x74\x00')
+        s = 'SunSpec Test'
+        l = slen=len(s) + 2 #test 0-padding
+        self.assertEqual(util.str_to_data(s, slen=l), b'\x53\x75\x6e\x53\x70\x65\x63\x20\x54\x65\x73\x74\x00\x00')
 
     def test_eui48_to_data(self):
         self.assertEqual(util.eui48_to_data('12:34:56:78:9A:BC'), b'\x00\x00\x12\x34\x56\x78\x9A\xBC')

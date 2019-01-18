@@ -31,6 +31,9 @@ import base64
 class SunSpecError(Exception):
     pass
 
+class StringLengthError(Exception):
+    pass
+
 """ Functions to pack and unpack data string values
 
 """
@@ -139,12 +142,10 @@ def float_to_data(f, len=None):
 def str_to_data(s, slen=None):
     if slen is None:
         slen = len(s)
-    if sys.version_info > (3,):
-        s = bytes(s, 'latin-1')
-    if slen < 16:
-        s += b'\x00'
-        slen += 1
-    return struct.pack(str(slen) + 's', s)
+    b = struct.pack(str(slen) + 's', s.encode())
+    if len(b) < len(s):
+        raise StringLengthError("'%s' is longer than %i characters" % (s, slen))
+    return b
 
 def eui48_to_data(eui48):
     return (b'\x00\x00' + base64.b16decode(eui48.replace(':', '')))

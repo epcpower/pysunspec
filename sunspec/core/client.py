@@ -370,7 +370,8 @@ class ClientModel(device.Model):
                                 byte_offset = offset * 2
                                 # print(pname, point, offset, byte_offset, (byte_offset + (int(point.point_type.len) * 2)), point.point_type.len)
                                 point.value_base = point.point_type.data_to(data[byte_offset:byte_offset + (int(point.point_type.len) * 2)])
-                                if (type(point.value_base) == bytes and
+                                t = type(point.value_base)
+                                if ((t == bytes or t == bytearray) and
                                         sys.version_info > (3,)):
                                     point.value_base = str(point.value_base, 'latin-1')
                                 if point.point_type.is_impl(point.value_base):
